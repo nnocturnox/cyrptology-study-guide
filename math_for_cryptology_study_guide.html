@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cryptology Math — Complete Exam Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {
+    delimiters:[
+      {left:'$$',right:'$$',display:true},
+      {left:'$',right:'$',display:false}
+    ],
+    ignoredTags:['script','noscript','style','textarea','annotation','annotation-xml']
+  });"></script>
+<style>
+:root {
+  --bg: #0f0f11;
+  --bg2: #161618;
+  --bg3: #1e1e21;
+  --border: #2a2a2e;
+  --border2: #363638;
+  --text: #e8e6e0;
+  --text2: #a8a49c;
+  --text3: #6a6660;
+  --accent: #c8a96e;
+  --accent2: #8fb4d4;
+  --accent3: #7ec899;
+  --accent4: #d4807a;
+  --accent5: #b89cd0;
+  --mono: 'IBM Plex Mono', monospace;
+  --serif: 'Source Serif 4', Georgia, serif;
+  --sans: 'Inter', sans-serif;
+  --sidebar-w: 280px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 15px; line-height: 1.7; }
+
+/* SIDEBAR */
+#sidebar {
+  position: fixed; top: 0; left: 0; width: var(--sidebar-w); height: 100vh;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  overflow-y: auto; z-index: 100; padding-bottom: 40px;
+}
+#sidebar::-webkit-scrollbar { width: 4px; }
+#sidebar::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+.sidebar-header { padding: 24px 20px 16px; border-bottom: 1px solid var(--border); }
+.sidebar-header h1 { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; }
+.sidebar-header p { font-size: 11px; color: var(--text3); margin-top: 4px; }
+.day-group { margin: 0; }
+.day-header {
+  padding: 10px 20px 6px; font-family: var(--mono); font-size: 10px;
+  font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em;
+  display: flex; align-items: center; gap: 8px; margin-top: 4px;
+}
+.day-badge {
+  width: 18px; height: 18px; border-radius: 4px; font-size: 9px;
+  display: flex; align-items: center; justify-content: center; font-weight: 500;
+  flex-shrink: 0;
+}
+.nav-link {
+  display: block; padding: 5px 20px 5px 36px; font-size: 12px; color: var(--text2);
+  text-decoration: none; border-left: 2px solid transparent;
+  transition: all 0.15s; line-height: 1.4;
+}
+.nav-link:hover { color: var(--text); background: var(--bg3); }
+.nav-link.active { color: var(--accent); border-left-color: var(--accent); background: rgba(200,169,110,0.06); }
+
+/* MAIN */
+#main { margin-left: var(--sidebar-w); padding: 0 60px 80px; max-width: calc(var(--sidebar-w) + 860px); }
+
+/* PROGRESS BAR */
+#progress-bar {
+  position: fixed; top: 0; left: var(--sidebar-w); right: 0; height: 2px;
+  background: var(--border); z-index: 50;
+}
+#progress-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.1s; }
+
+/* SECTIONS */
+.day-section { padding-top: 60px; }
+.day-title {
+  font-family: var(--mono); font-size: 11px; color: var(--text3);
+  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 10px;
+}
+.day-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.topic { margin-bottom: 60px; padding-top: 20px; }
+.topic-header { margin-bottom: 28px; }
+.topic-type {
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.12em; padding: 3px 8px;
+  border-radius: 3px; display: inline-block; margin-bottom: 10px;
+}
+.type-def  { background: rgba(200,169,110,0.12); color: var(--accent); border: 1px solid rgba(200,169,110,0.25); }
+.type-alg  { background: rgba(126,200,153,0.12); color: var(--accent3); border: 1px solid rgba(126,200,153,0.25); }
+.type-thm  { background: rgba(143,180,212,0.12); color: var(--accent2); border: 1px solid rgba(143,180,212,0.25); }
+
+.topic-title { font-family: var(--serif); font-size: 28px; font-weight: 600; color: var(--text); line-height: 1.2; }
+.topic-subtitle { font-size: 13px; color: var(--text2); margin-top: 6px; }
+
+/* CONTENT BLOCKS */
+.def-box, .thm-box, .proof-box, .example-box, .warning-box, .exam-box {
+  border-radius: 8px; padding: 20px 24px; margin: 24px 0;
+  border-left: 3px solid;
+}
+.def-box { background: rgba(200,169,110,0.06); border-color: var(--accent); }
+.def-box .label { color: var(--accent); font-family: var(--mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+.thm-box { background: rgba(143,180,212,0.06); border-color: var(--accent2); }
+.thm-box .label { color: var(--accent2); font-family: var(--mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+.proof-box { background: var(--bg3); border-color: var(--border2); }
+.proof-box .label { color: var(--text3); font-family: var(--mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+.example-box { background: rgba(126,200,153,0.06); border-color: var(--accent3); }
+.example-box .label { color: var(--accent3); font-family: var(--mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+.warning-box { background: rgba(212,128,122,0.06); border-color: var(--accent4); }
+.warning-box .label { color: var(--accent4); font-family: var(--mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+.exam-box { background: rgba(184,156,208,0.06); border-color: var(--accent5); }
+.exam-box .label { color: var(--accent5); font-family: var(--mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+
+h3 { font-family: var(--sans); font-size: 16px; font-weight: 600; color: var(--text); margin: 28px 0 10px; }
+h4 { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--accent); margin: 20px 0 8px; }
+p { margin-bottom: 14px; color: var(--text2); }
+strong { color: var(--text); font-weight: 600; }
+em { font-style: italic; color: var(--text); }
+
+ul, ol { padding-left: 22px; margin-bottom: 14px; color: var(--text2); }
+li { margin-bottom: 6px; }
+li::marker { color: var(--text3); }
+
+/* CODE */
+pre {
+  background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px;
+  padding: 20px; overflow-x: auto; margin: 20px 0;
+  font-family: var(--mono); font-size: 13px; line-height: 1.7; color: var(--text);
+}
+code { font-family: var(--mono); font-size: 13px; color: var(--accent3); }
+pre code { color: var(--text); }
+.kw { color: var(--accent2); }
+.fn { color: var(--accent3); }
+.cm { color: var(--text3); }
+.val { color: var(--accent); }
+
+/* STEP LIST */
+.steps { counter-reset: step; list-style: none; padding: 0; }
+.steps li { counter-increment: step; padding: 10px 0 10px 44px; position: relative; border-bottom: 1px solid var(--border); }
+.steps li:last-child { border-bottom: none; }
+.steps li::before {
+  content: counter(step);
+  position: absolute; left: 0; top: 10px;
+  width: 26px; height: 26px; border-radius: 6px;
+  background: var(--bg3); border: 1px solid var(--border2);
+  font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* TABLE */
+table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+th { background: var(--bg3); color: var(--text); padding: 10px 14px; text-align: left; font-weight: 500; border: 1px solid var(--border2); }
+td { padding: 9px 14px; border: 1px solid var(--border); color: var(--text2); }
+tr:hover td { background: rgba(255,255,255,0.02); }
+
+/* DIVIDER */
+.topic-divider { border: none; border-top: 1px solid var(--border); margin: 50px 0 0; }
+
+/* KATEX */
+.katex { font-size: 1.05em; }
+.katex-display { overflow-x: auto; padding: 4px 0; }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"><div id="progress-fill"></div></div>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <h1>NI-MKY</h1>
+    <p>Complete exam preparation guide</p>
+  </div>
+
+  <div class="day-group">
+    <div class="day-header"><span class="day-badge" style="background:rgba(200,169,110,0.2);color:var(--accent)">1</span>Abstract Algebra</div>
+    <a class="nav-link" href="#factor-ring">Factor ring (quotient ring)</a>
+    <a class="nav-link" href="#integral-domain">Integral domain</a>
+    <a class="nav-link" href="#pid">Principal ideal domain</a>
+    <a class="nav-link" href="#ring-char">Ring characteristics</a>
+    <a class="nav-link" href="#field-extension">Field / body extension</a>
+    <a class="nav-link" href="#normal-subgroup">Homomorphism → normal subgroup</a>
+  </div>
+
+  <div class="day-group">
+    <div class="day-header"><span class="day-badge" style="background:rgba(126,200,153,0.2);color:var(--accent3)">2</span>Finite Fields GF(pᵏ)</div>
+    <a class="nav-link" href="#gfpk">GF(pᵏ) — structure & construction</a>
+    <a class="nav-link" href="#irreducible">Irreducible polynomial</a>
+    <a class="nav-link" href="#primitive">Primitive element</a>
+    <a class="nav-link" href="#finfield-props">Properties of finite fields</a>
+  </div>
+
+  <div class="day-group">
+    <div class="day-header"><span class="day-badge" style="background:rgba(143,180,212,0.2);color:var(--accent2)">3</span>Elliptic Curves</div>
+    <a class="nav-link" href="#ec-def">EC over GF(pᵏ)</a>
+    <a class="nav-link" href="#point-at-inf">Point at infinity</a>
+    <a class="nav-link" href="#ec-addition">Addition on EC</a>
+    <a class="nav-link" href="#divisor">Divisor on EC</a>
+  </div>
+
+  <div class="day-group">
+    <div class="day-header"><span class="day-badge" style="background:rgba(184,156,208,0.2);color:var(--accent5)">4</span>Lattices & NTRU</div>
+    <a class="nav-link" href="#lattice">Lattice (grid) definition</a>
+    <a class="nav-link" href="#svp-cvp">SVP & CVP</a>
+    <a class="nav-link" href="#gaussian">Gaussian expected shortest vector</a>
+    <a class="nav-link" href="#ntru">NTRU encryption system</a>
+    <a class="nav-link" href="#ntru-proof">NTRU correctness proof</a>
+  </div>
+
+  <div class="day-group">
+    <div class="day-header"><span class="day-badge" style="background:rgba(212,128,122,0.2);color:var(--accent4)">5</span>Gröbner Bases & MQ</div>
+    <a class="nav-link" href="#groebner">Gröbner basis</a>
+    <a class="nav-link" href="#mq">MQ problem</a>
+    <a class="nav-link" href="#buchberger-crit">Buchberger criterion</a>
+    <a class="nav-link" href="#buchberger-alg">Buchberger algorithm</a>
+  </div>
+
+  <div class="day-group">
+    <div class="day-header"><span class="day-badge" style="background:rgba(126,200,153,0.2);color:var(--accent3)">6</span>Discrete Log</div>
+    <a class="nav-link" href="#index-calculus">Index calculus</a>
+    <a class="nav-link" href="#pohlig-hellman">Pohlig-Hellman</a>
+    <a class="nav-link" href="#ioc">Index of coincidence (IOC)</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main id="main">
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- DAY 1 -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<div class="day-section">
+  <div class="day-title">Day 1 — Abstract Algebra Foundations</div>
+
+  <!-- FACTOR RING -->
+  <div class="topic" id="factor-ring">
+    <div class="topic-header">
+      <span class="topic-type type-def">Definition</span>
+      <div class="topic-title">Factor Ring (Quotient Ring)</div>
+      <div class="topic-subtitle">Also called: factor ring, residue class ring</div>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Formal Definition</div>
+      <p>Let $(R, +, \cdot)$ be a ring and $I \subseteq R$ a two-sided ideal. The <strong>factor ring</strong> (or quotient ring) $R/I$ is the set of all cosets of $I$ in $(R, +)$:</p>
+      $$R/I = \{ a + I \mid a \in R \} = \{ \{a + x \mid x \in I\} \mid a \in R \}$$
+      <p>with operations defined as:</p>
+      <ul>
+        <li><strong>Addition:</strong> $(a + I) + (b + I) = (a + b) + I$</li>
+        <li><strong>Multiplication:</strong> $(a + I)(b + I) = (ab) + I$</li>
+      </ul>
+    </div>
+
+    <h3>Why is this well-defined?</h3>
+    <p>The operations must not depend on the choice of representative. We must check: if $a + I = a' + I$ and $b + I = b' + I$, then $(a+b)+I = (a'+b')+I$ and $ab+I = a'b'+I$.</p>
+    <div class="proof-box">
+      <div class="label">Verification (multiplication)</div>
+      <p>$a' = a + i_1$, $b' = b + i_2$ for some $i_1, i_2 \in I$. Then:</p>
+      $$a'b' = (a+i_1)(b+i_2) = ab + ai_2 + i_1 b + i_1 i_2$$
+      <p>Since $I$ is a two-sided ideal: $ai_2 \in I$, $i_1 b \in I$, $i_1 i_2 \in I$. So $a'b' - ab \in I$, thus $a'b' + I = ab + I$. ✓</p>
+    </div>
+
+    <h3>What is an ideal?</h3>
+    <div class="def-box">
+      <div class="label">Ideal</div>
+      <p>A subset $I \subseteq R$ is a <strong>two-sided ideal</strong> if:</p>
+      <ul>
+        <li>$(I, +)$ is a subgroup of $(R, +)$</li>
+        <li>For all $r \in R$, $i \in I$: $ri \in I$ and $ir \in I$ (absorption)</li>
+      </ul>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Key Example</div>
+      <p><strong>$\mathbb{Z}/n\mathbb{Z}$:</strong> Take $R = \mathbb{Z}$, $I = n\mathbb{Z} = \{nk : k \in \mathbb{Z}\}$. Then:</p>
+      $$\mathbb{Z}/n\mathbb{Z} = \{\bar{0}, \bar{1}, \bar{2}, \ldots, \overline{n-1}\}$$
+      <p>where $\bar{a} = a + n\mathbb{Z}$ is the residue class of $a$. For $n=5$: $\bar{3} + \bar{4} = \bar{2}$, $\bar{3} \cdot \bar{4} = \bar{2}$.</p>
+      <p><strong>$\mathbb{Z}[x]/(x^2+1)$:</strong> Every element is $a + bx$ (polynomial mod $x^2+1$, since $x^2 \equiv -1$). This is actually $\mathbb{C}$, the complex numbers!</p>
+    </div>
+
+    <div class="exam-box">
+      <div class="label">Exam tip</div>
+      <p>Be ready to: (1) state the definition with formal set notation, (2) define the two operations, (3) explain why well-definedness requires $I$ to be an ideal (not just a subgroup), (4) give the $\mathbb{Z}/n\mathbb{Z}$ example.</p>
+    </div>
+  </div>
+
+  <hr class="topic-divider">
+
+  <!-- INTEGRAL DOMAIN -->
+  <div class="topic" id="integral-domain">
+    <div class="topic-header">
+      <span class="topic-type type-def">Definition</span>
+      <div class="topic-title">Integral Domain (Integrity Field)</div>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Formal Definition</div>
+      <p>A <strong>commutative ring</strong> $(R, +, \cdot)$ with unity $1 \neq 0$ is an <strong>integral domain</strong> if it has <em>no zero divisors</em>:</p>
+      $$\forall a, b \in R: \quad ab = 0 \implies a = 0 \text{ or } b = 0$$
+      <p>Equivalently: the <strong>cancellation law</strong> holds: $ab = ac$ and $a \neq 0 \implies b = c$.</p>
+    </div>
+
+    <h3>Full hierarchy of algebraic structures</h3>
+    <table>
+      <tr><th>Structure</th><th>What it adds</th></tr>
+      <tr><td>Ring</td><td>$(R,+)$ abelian group, multiplication associative, distributive</td></tr>
+      <tr><td>Commutative ring</td><td>$ab = ba$</td></tr>
+      <tr><td>Ring with unity</td><td>$\exists 1 \in R: 1 \cdot a = a$</td></tr>
+      <tr><td><strong>Integral domain</strong></td><td>Commutative, unity, no zero divisors</td></tr>
+      <tr><td>Field</td><td>Integral domain + every non-zero element has a multiplicative inverse</td></tr>
+    </table>
+
+    <div class="example-box">
+      <div class="label">Examples</div>
+      <p><strong>Integral domains:</strong> $\mathbb{Z}$, $\mathbb{Q}$, $\mathbb{R}$, $\mathbb{C}$, $\mathbb{Z}[x]$, $\mathbb{Z}[i]$ (Gaussian integers)</p>
+      <p><strong>Not integral domains:</strong> $\mathbb{Z}/6\mathbb{Z}$ — because $2 \cdot 3 = 6 \equiv 0$ but $2 \neq 0$ and $3 \neq 0$. Zero divisors!</p>
+    </div>
+
+    <div class="thm-box">
+      <div class="label">Important Theorem</div>
+      <p>$\mathbb{Z}/n\mathbb{Z}$ is an integral domain if and only if $n$ is prime. In that case it is also a field (since every finite integral domain is a field).</p>
+    </div>
+  </div>
+
+  <hr class="topic-divider">
+
+  <!-- PID -->
+  <div class="topic" id="pid">
+    <div class="topic-header">
+      <span class="topic-type type-def">Definition</span>
+      <div class="topic-title">Principal Ideal Domain (PID)</div>
+      <div class="topic-subtitle">Czech: obor hlavních ideálů</div>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Formal Definition</div>
+      <p>An integral domain $R$ is a <strong>principal ideal domain (PID)</strong> if every ideal of $R$ is <em>principal</em>, i.e., generated by a single element:</p>
+      $$\forall I \subseteq R \text{ ideal}: \quad \exists a \in R \text{ such that } I = (a) = aR = \{ar : r \in R\}$$
+    </div>
+
+    <h3>Principal ideal — what does it mean?</h3>
+    <p>The ideal generated by $a$ is $(a) = \{ra : r \in R\}$, all multiples of $a$. In $\mathbb{Z}$: $(6) = \{\ldots, -12, -6, 0, 6, 12, \ldots\}$.</p>
+
+    <div class="example-box">
+      <div class="label">Key Examples</div>
+      <p><strong>$\mathbb{Z}$ is a PID:</strong> Every ideal is $(n)$ for some $n \geq 0$. Proof: take the smallest positive element of any ideal.</p>
+      <p><strong>$F[x]$ is a PID</strong> for any field $F$: Use polynomial division to show every ideal is generated by the GCD polynomial.</p>
+      <p><strong>$\mathbb{Z}[x]$ is NOT a PID:</strong> The ideal $(2, x)$ (polynomials with even constant term) is not principal.</p>
+    </div>
+
+    <div class="thm-box">
+      <div class="label">Hierarchy</div>
+      <p>Euclidean domain $\implies$ PID $\implies$ UFD (unique factorization domain) $\implies$ Integral domain. None of these implications reverses in general.</p>
+    </div>
+
+    <div class="exam-box">
+      <div class="label">Exam tip</div>
+      <p>The exam often uses "field of principal ideals" to mean PID. Know the definition, one non-example, and the fact that $F[x]$ is always a PID.</p>
+    </div>
+  </div>
+
+  <hr class="topic-divider">
+
+  <!-- RING CHARACTERISTICS -->
+  <div class="topic" id="ring-char">
+    <div class="topic-header">
+      <span class="topic-type type-def">Definition</span>
+      <div class="topic-title">Characteristic of a Ring</div>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Formal Definition</div>
+      <p>The <strong>characteristic</strong> of a ring $R$ with unity $1$ is the smallest positive integer $n$ such that:</p>
+      $$\underbrace{1 + 1 + \cdots + 1}_{n} = 0$$
+      <p>If no such $n$ exists, we write $\text{char}(R) = 0$.</p>
+      <p>Equivalently: $\text{char}(R) = \min\{n \in \mathbb{N} : n \cdot 1_R = 0\}$, where $n \cdot a = \underbrace{a + a + \cdots + a}_n$.</p>
+    </div>
+
+    <div class="thm-box">
+      <div class="label">Key Theorem</div>
+      <p>The characteristic of an integral domain (and thus any field) is either $0$ or a prime $p$.</p>
+    </div>
+    <div class="proof-box">
+      <div class="label">Proof</div>
+      <p>Suppose $\text{char}(R) = n = ab$ with $1 < a, b < n$. Then $(a \cdot 1)(b \cdot 1) = (ab) \cdot 1 = n \cdot 1 = 0$. Since $R$ is an integral domain, $a \cdot 1 = 0$ or $b \cdot 1 = 0$. But this contradicts the minimality of $n$. So $n$ must be prime. $\square$</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Examples</div>
+      <ul>
+        <li>$\text{char}(\mathbb{Z}) = \text{char}(\mathbb{Q}) = \text{char}(\mathbb{R}) = \text{char}(\mathbb{C}) = 0$</li>
+        <li>$\text{char}(\mathbb{Z}/p\mathbb{Z}) = p$ (prime)</li>
+        <li>$\text{char}(\text{GF}(p^k)) = p$</li>
+        <li>$\text{char}(\mathbb{Z}/6\mathbb{Z}) = 6$ — but this is not an integral domain</li>
+      </ul>
+    </div>
+
+    <div class="thm-box">
+      <div class="label">Frobenius Endomorphism (char p)</div>
+      <p>If $R$ has characteristic $p$ (prime), then for all $a, b \in R$:</p>
+      $$(a + b)^p = a^p + b^p$$
+      <p>This is because the binomial coefficients $\binom{p}{k}$ for $0 < k < p$ are all divisible by $p$, hence zero in characteristic $p$.</p>
+    </div>
+  </div>
+
+  <hr class="topic-divider">
+
+  <!-- FIELD EXTENSION -->
+  <div class="topic" id="field-extension">
+    <div class="topic-header">
+      <span class="topic-type type-def">Definition</span>
+      <div class="topic-title">Field Extension (Body Extension)</div>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Formal Definition</div>
+      <p>If $F$ and $K$ are fields and $F \subseteq K$ (with the same operations), we say $K$ is a <strong>field extension</strong> of $F$, written $K/F$ (read "K over F").</p>
+      <p>The <strong>degree</strong> of the extension is $[K:F] = \dim_F(K)$ — the dimension of $K$ as a vector space over $F$.</p>
+    </div>
+
+    <h3>Types of extensions</h3>
+    <ul>
+      <li><strong>Simple extension:</strong> $K = F(\alpha)$ — generated by adjoining a single element $\alpha$</li>
+      <li><strong>Algebraic extension:</strong> every element of $K$ is a root of some polynomial in $F[x]$</li>
+      <li><strong>Finite extension:</strong> $[K:F] < \infty$ (every finite extension is algebraic)</li>
+    </ul>
+
+    <div class="example-box">
+      <div class="label">Examples</div>
+      <ul>
+        <li>$\mathbb{C}/\mathbb{R}$: degree 2, basis $\{1, i\}$</li>
+        <li>$\mathbb{Q}(\sqrt{2})/\mathbb{Q}$: degree 2, basis $\{1, \sqrt{2}\}$</li>
+        <li>$\text{GF}(p^k)/\text{GF}(p)$: degree $k$, basis $\{1, \alpha, \alpha^2, \ldots, \alpha^{k-1}\}$ where $\alpha$ is a root of an irreducible degree-$k$ polynomial over $\text{GF}(p)$</li>
+      </ul>
+    </div>
+
+    <div class="thm-box">
+      <div class="label">Tower Law</div>
+      <p>If $F \subseteq E \subseteq K$ are fields, then $[K:F] = [K:E] \cdot [E:F]$.</p>
+    </div>
+
+    <div class="thm-box">
+      <div class="label">Minimal polynomial</div>
+      <p>For an algebraic element $\alpha$ over $F$, the <strong>minimal polynomial</strong> $\text{min}_F(\alpha)$ is the unique monic irreducible polynomial in $F[x]$ with $\alpha$ as a root. Then $F(\alpha) \cong F[x]/(\text{min}_F(\alpha))$ and $[F(\alpha):F] = \deg(\text{min}_F(\alpha))$.</p>
+    </div>
+  </div>
+
+  <hr class="topic-divider">
+
+  <!-- NORMAL SUBGROUP -->
+  <div class="topic" id="normal-subgroup">
+    <div class="topic-header">
+      <span class="topic-type type-thm">Theorem + Proof</span>
+      <div class="topic-title">Kernel of a Homomorphism is a Normal Subgroup</div>
+    </div>
+
+    <div class="thm-box">
+      <div class="label">Theorem Statement</div>
+      <p>Let $\varphi: G \to H$ be a group homomorphism. Then $\ker(\varphi) = \{g \in G : \varphi(g) = e_H\}$ is a <strong>normal subgroup</strong> of $G$.</p>
+    </div>
+
+    <h3>Definitions you need</h3>
+    <div class="def-box">
+      <div class="label">Group homomorphism</div>
+      <p>A map $\varphi: G \to H$ such that $\varphi(ab) = \varphi(a)\varphi(b)$ for all $a, b \in G$.</p>
+    </div>
+    <div class="def-box">
+      <div class="label">Normal subgroup</div>
+      <p>A subgroup $N \leq G$ is <strong>normal</strong> ($N \trianglelefteq G$) if for all $g \in G$: $gNg^{-1} = N$, i.e., $gng^{-1} \in N$ for all $n \in N$.</p>
+    </div>
+
+    <div class="proof-box">
+      <div class="label">Proof — Step by Step</div>
+      <p>Let $K = \ker(\varphi)$. We prove two things: (1) $K$ is a subgroup, (2) $K$ is normal.</p>
+
+      <p><strong>Step 1: $K$ is a subgroup.</strong></p>
+      <ol class="steps">
+        <li><strong>Non-empty / identity:</strong> $\varphi(e_G) = e_H$ (homomorphisms always send identity to identity: $\varphi(e_G) = \varphi(e_G \cdot e_G) = \varphi(e_G)\varphi(e_G)$, cancel $\varphi(e_G)$). So $e_G \in K$. ✓</li>
+        <li><strong>Closure:</strong> Let $a, b \in K$. Then $\varphi(ab) = \varphi(a)\varphi(b) = e_H \cdot e_H = e_H$. So $ab \in K$. ✓</li>
+        <li><strong>Inverses:</strong> Let $a \in K$. Then $\varphi(a^{-1}) = \varphi(a)^{-1} = e_H^{-1} = e_H$. So $a^{-1} \in K$. ✓</li>
+      </ol>
+
+      <p><strong>Step 2: $K$ is normal in $G$.</strong></p>
+      <p>We must show: for all $g \in G$ and $n \in K$, we have $gng^{-1} \in K$.</p>
+      $$\varphi(gng^{-1}) = \varphi(g)\,\varphi(n)\,\varphi(g^{-1}) = \varphi(g) \cdot e_H \cdot \varphi(g)^{-1} = \varphi(g)\varphi(g)^{-1} = e_H$$
+      <p>Therefore $gng^{-1} \in K$. Since $g$ and $n$ were arbitrary, $K \trianglelefteq G$. $\square$</p>
+    </div>
+
+    <div class="exam-box">
+      <div class="label">Exam tip — perfect description means:</div>
+      <p>1. State the homomorphism property. 2. Define the kernel. 3. Prove subgroup (3 parts). 4. Prove normality using the computation above. Each line should be justified.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- DAY 2 -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<div class="day-section">
+  <div class="day-title">Day 2 — Finite Fields GF(p^k)</div>
+
+  <!-- GF(pk) -->
+  <div class="topic" id="gfpk">
+    <div class="topic-header">
+      <span class="topic-type type-def">Definition</span>
+      <div class="topic-title">GF(p^k) — Galois Field</div>
+      <div class="topic-subtitle">Not in lectures — source it carefully</div>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Formal Definition</div>
+      <p>For a prime $p$ and positive integer $k$, there exists a unique (up to isomorphism) <strong>finite field</strong> with $p^k$ elements, denoted $\text{GF}(p^k)$ or $\mathbb{F}_{p^k}$.</p>
+      <p>Concretely: let $f(x) \in \mathbb{F}_p[x]$ be an irreducible polynomial of degree $k$. Then:</p>
+      $$\text{GF}(p^k) = \mathbb{F}_p[x]/(f(x)) = \{a_0 + a_1 x + \cdots + a_{k-1}x^{k-1} : a_i \in \mathbb{F}_p\}$$
+      <p>with all arithmetic done modulo $f(x)$.</p>
+    </div>
+
+    <h3>Construction — Step by Step</h3>
+    <div class="example-box">
+      <div class="label">Constructing GF(2³) = GF(8)</div>
+      <ol class="steps">
+        <li>Choose an irreducible polynomial of degree 3 over $\mathbb{F}_2$. Check $f(x) = x^3 + x + 1$: $f(0) = 1 \neq 0$, $f(1) = 1+1+1 = 1 \neq 0$. No roots → irreducible over $\mathbb{F}_2$. ✓</li>
+        <li>Let $\alpha$ be a root: $\alpha^3 + \alpha + 1 = 0$, so $\alpha^3 = \alpha + 1$ (in char 2, $-1 = 1$).</li>
+        <li>The elements of $\text{GF}(8)$ are all polynomials of degree $\leq 2$ over $\mathbb{F}_2$:<br>
+            $\{0, 1, \alpha, \alpha+1, \alpha^2, \alpha^2+1, \alpha^2+\alpha, \alpha^2+\alpha+1\}$ — exactly 8 elements.</li>
+        <li>To multiply: use the reduction rule $\alpha^3 = \alpha + 1$:<br>
+            $\alpha^2 \cdot \alpha^2 = \alpha^4 = \alpha \cdot \alpha^3 = \alpha(\alpha+1) = \alpha^2 + \alpha$.</li>
+      </ol>
+    </div>
+
+    <h3>Why is it unique?</h3>
+    <div class="thm-box">
+      <div class="label">Uniqueness Theorem</div>
+      <p>Any two finite fields with $p^k$ elements are isomorphic. (The choice of irreducible polynomial $f$ doesn't matter — different choices give isomorphic fields.)</p>
+      <p><strong>Proof sketch:</strong> $\text{GF}(p^k)$ is the splitting field of $x^{p^k} - x$ over $\mathbb{F}_p$. Splitting fields are unique up to isomorphism. Every element $a \in \text{GF}(p^k)$ satisfies $a^{p^k} = a$ (Fermat's little theorem generalized).</p>
+    </div>
+
+    <div class="exam-box">
+      <div class="label">What the professor expects</div>
+      <p>Since this is "not in lectures", they want a complete, precise answer: (1) state that $p$ must be prime and $k \geq 1$, (2) give the construction via $\mathbb{F}_p[x]/(f)$, (3) note uniqueness up to isomorphism, (4) give GF(4) or GF(8) as a concrete example.</p>
+    </div>
+  </div>
+
+  <hr class="topic-divider">
+
+  <!-- IRREDUCIBLE POLYNOMIAL -->
+  <div class="topic" id="irreducible">
+    <div class="topic-header">
+      <span class="topic-type type-def">Definition</span>
+      <div class="topic-title">Irreducible Polynomial</div>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Formal Definition</div>
+      <p>A polynomial $f(x) \in F[x]$ of degree $\geq 1$ is <strong>irreducible over $F$</strong> if it cannot be written as $f(x) = g(x) \cdot h(x)$ where $g, h \in F[x]$ and $\deg(g) \geq 1$, $\deg(h) \geq 1$.</p>
+      <p>Equivalently: $f$ is irreducible if its only divisors in $F[x]$ are units (non-zero constants) and associates (constant multiples of $f$).</p>
+    </div>
+
+    <h3>How to check irreducibility</h3>
+    <ul>
+      <li><strong>Degree 1:</strong> Always irreducible.</li>
+      <li><strong>Degree 2 or 3:</strong> Irreducible $\iff$ no roots in $F$. (If it factors, one factor has degree 1, hence a root.)</li>
+      <li><strong>Degree $\geq 4$:</strong> Could factor into two polynomials of degree $\geq 2$ with no roots. Need other methods.</li>
+    </ul>
+
+    <div class="example-box">
+      <div class="label">Examples over GF(2) = {0, 1}</div>
+      <p>Check all degree-3 polynomials by testing $f(0)$ and $f(1)$:</p>
+      <ul>
+        <li>$x^3 + x + 1$: $f(0)=1\neq 0$, $f(1)=1+1+1=1\neq 0$ → <strong>irreducible ✓</strong></li>
+        <li>$x^3 + x^2 + 1$: $f(0)=1\neq 0$, $f(1)=1+1+1=1\neq 0$ → <strong>irreducible ✓</strong></li>
+        <li>$x^3 + 1 = (x+1)(x^2+x+1)$: reducible</li>
+        <li>$x^3 + x^2 + x + 1 = (x+1)^3$: reducible (since $f(1)=0$)</li>
+      </ul>
+    </div>
+
+    <div class="thm-box">
+      <div class="label">Connection to GF(pᵏ)</div>
+      <p>Irreducible polynomials are the building blocks of finite fields. For each degree $k$, irreducible polynomials over $\mathbb{F}_p$ exist, and the number of monic irreducible polynomials of degree $k$ over $\mathbb{F}_p$ is $\frac{1}{k}\sum_{d|k} \mu(k/d) p^d$ (by Möbius inversion).</p>
+    </div>
+  </div>
+
+  <hr class="topic-divider">
+
+  <!-- PRIMITIVE ELEMENT -->
+  <div class="topic" id="primitive">
+    <div class="topic-header">
+      <span class="topic-type type-def">Definition</span>
+      <div class="topic-title">Primitive Element</div>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Formal Definition</div>
+      <p>An element $\alpha \in \text{GF}(p^k)$ is a <strong>primitive element</strong> (or primitive root) if it is a <em>generator</em> of the multiplicative group $\text{GF}(p^k)^*$. That is:</p>
+      $$\text{ord}(\alpha) = p^k - 1$$
+      <p>Equivalently: $\{1, \alpha, \alpha^2, \ldots, \alpha^{p^k - 2}\} = \text{GF}(p^k)^*$ — every non-zero element is a power of $\alpha$.</p>
+    </div>
+
+    <div class="thm-box">
+      <div class="label">Existence Theorem</div>
+      <p>Every finite field $\text{GF}(p^k)$ has at least one primitive element. In fact, the multiplicative group $\text{GF}(p^k)^*$ is <strong>cyclic</strong> of order $p^k - 1$, so it has exactly $\varphi(p^k - 1)$ primitive elements (where $\varphi$ is Euler's totient function).</p>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Primitive polynomial</div>
+      <p>A monic irreducible polynomial $f(x) \in \mathbb{F}_p[x]$ of degree $k$ is a <strong>primitive polynomial</strong> if any root of $f$ is a primitive element of $\text{GF}(p^k)$.</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example in GF(7)</div>
+      <p>$\text{GF}(7)^* = \{1,2,3,4,5,6\}$, order $= 6$. Is $\alpha = 3$ primitive?</p>
+      <p>$3^1=3$, $3^2=2$, $3^3=6$, $3^4=4$, $3^5=5$, $3^6=1$. Yes! $3$ generates all of $\text{GF}(7)^*$. ✓</p>
+      <p>$\alpha = 2$: $2^1=2$, $2^2=4$, $2^3=1$. Order 3, not primitive.</p>
+      <p>Number of primitive elements: $\varphi(6) = \varphi(2)\varphi(3) = 1 \cdot 2 = 2$. Indeed, only $3$ and $5$ are primitive in $\text{GF}(7)$.</p>
+    </div>
+  </div>
+
+  <hr class="topic-divider">
+
+  <!-- PROPERTIES OF FINITE FIELDS -->
+  <div class="topic" id="finfield-props">
+    <div class="topic-header">
+      <span class="topic-type type-thm">Theorem</span>
+      <div class="topic-title">Properties of Finite Fields</div>
+      <div class="topic-subtitle">What characteristics does a finite field have?</div>
+    </div>
+
+    <div class="thm-box">
+      <div class="label">Complete list of properties</div>
+      <ol>
+        <li><strong>Characteristic is prime:</strong> $\text{char}(\text{GF}(p^k)) = p$ for some prime $p$.</li>
+        <li><strong>Size is prime power:</strong> $|\text{GF}(p^k)| = p^k$ for some prime $p$ and $k \geq 1$.</li>
+        <li><strong>Exists and is unique:</strong> For every prime power $q = p^k$, there exists exactly one finite field $\text{GF}(q)$ up to isomorphism.</li>
+        <li><strong>Multiplicative group is cyclic:</strong> $\text{GF}(p^k)^*$ is cyclic of order $p^k - 1$.</li>
+        <li><strong>Every element satisfies $x^{p^k} = x$:</strong> The polynomial $x^{p^k} - x$ splits completely over $\text{GF}(p^k)$ and its roots are exactly the elements of $\text{GF}(p^k)$.</li>
+        <li><strong>Subfield structure:</strong> $\text{GF}(p^d) \subseteq \text{GF}(p^k) \iff d \mid k$.</li>
+        <li><strong>Frobenius automorphism:</strong> The map $\phi: x \mapsto x^p$ is an automorphism of $\text{GF}(p^k)$, and $\text{Gal}(\text{GF}(p^k)/\text{GF}(p)) = \langle \phi \rangle \cong \mathbb{Z}/k\mathbb{Z}$.</li>
+      </ol>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example — Frobenius in GF(4)</div>
+      <p>$\text{GF}(4) = \mathbb{F}_2[x]/(x^2+x+1)$, elements $\{0, 1, \alpha, \alpha+1\}$ where $\alpha^2 = \alpha+1$.</p>
+      <p>Frobenius: $\phi(\alpha) = \alpha^2 = \alpha+1$. And $\phi(\alpha+1) = (\alpha+1)^2 = \alpha^2+1 = \alpha$. So $\phi$ swaps $\alpha$ and $\alpha+1$ — this is the Galois group of order 2.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- DAY 3 -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<div class="day-section">
+  <div class="day-title">Day 3 — Elliptic Curves</div>
+
+  <!-- EC DEF -->
+  <div class="topic" id="ec-def">
+    <div class="topic-header">
+      <span class="topic-type type-def">Definition</span>
+      <div class="topic-title">Elliptic Curve over GF(p^k)</div>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Formal Definition (Short Weierstrass form)</div>
+      <p>Let $K = \text{GF}(p^k)$ with $p > 3$. An <strong>elliptic curve</strong> $E$ over $K$ is defined by:</p>
+      $$E: y^2 = x^3 + ax + b, \quad a, b \in K$$
+      <p>subject to the <strong>non-singularity condition</strong>:</p>
+      $$\Delta = -16(4a^3 + 27b^2) \neq 0$$
+      <p>The set of points on $E$ over $K$ is:</p>
+      $$E(K) = \{(x, y) \in K^2 : y^2 = x^3 + ax + b\} \cup \{\mathcal{O}\}$$
+      <p>where $\mathcal{O}$ is the <strong>point at infinity</strong>.</p>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">For char 2 and char 3</div>
+      <p>When $p = 2$ or $p = 3$, the short Weierstrass form doesn't work (denominators vanish). Use the <strong>general Weierstrass form</strong>: $y^2 + a_1 xy + a_3 y = x^3 + a_2 x^2 + a_4 x + a_6$.</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example over GF(7)</div>
+      <p>$E: y^2 = x^3 + 2x + 3$ over $\mathbb{F}_7$. Check: $\Delta = -16(4 \cdot 8 + 27 \cdot 9) = -16(32+243) = -16 \cdot 275$. Since $275 \equiv 2 \pmod 7$ and $-16 \equiv 5 \pmod 7$, $\Delta \equiv 10 \equiv 3 \neq 0 \pmod 7$. Non-singular ✓.</p>
+    </div>
+
+    <div class="thm-box">
+      <div class="label">Hasse's Theorem (bound on number of points)</div>
+      <p>$$|E(\mathbb{F}_q)| = q + 1 - t, \quad |t| \leq 2\sqrt{q}$$</p>
+      <p>where $t$ is the <em>trace of Frobenius</em>. So $E$ has roughly $q$ points, within $2\sqrt{q}$.</p>
+    </div>
+  </div>
+
+  <hr class="topic-divider">
+
+  <!-- POINT AT INFINITY -->
+  <div class="topic" id="point-at-inf">
+    <div class="topic-header">
+      <span class="topic-type type-def">Definition</span>
+      <div class="topic-title">Point at Infinity</div>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Projective Coordinates</div>
+      <p>To include the point at infinity, we work in the <strong>projective plane</strong> $\mathbb{P}^2(K)$, where points are equivalence classes $[X:Y:Z]$ with $(X,Y,Z) \neq (0,0,0)$ and $[X:Y:Z] = [\lambda X:\lambda Y:\lambda Z]$ for all $\lambda \neq 0$.</p>
+      <p>An affine point $(x,y)$ corresponds to $[x:y:1]$.</p>
+      <p>The <strong>projective Weierstrass equation</strong> is (homogenize by $x = X/Z$, $y = Y/Z$):</p>
+      $$Y^2 Z = X^3 + aXZ^2 + bZ^3$$
+      <p>Setting $Z = 0$: $0 = X^3$, so $X = 0$. The only solution with $Z=0$ is $[0:1:0]$.</p>
+      <p>The <strong>point at infinity</strong> is $\mathcal{O} = [0:1:0]$.</p>
+    </div>
+
+    <div class="thm-box">
+      <div class="label">Role of O</div>
+      <p>$\mathcal{O}$ is the <strong>identity element</strong> of the group law $(E(K), +)$:</p>
+      <ul>
+        <li>$P + \mathcal{O} = \mathcal{O} + P = P$ for all $P \in E(K)$</li>
+        <li>$P + (-P) = \mathcal{O}$ where $-P = (x, -y)$ for $P = (x,y)$</li>
+      </ul>
+      <p>Geometrically: the line through $P$ and $-P$ is vertical; it meets the curve at $\mathcal{O}$ as the "third point at infinity".</p>
+    </div>
+
+    <div class="exam-box">
+      <div class="label">Exam tip</div>
+      <p>A perfect answer explains: why we need projective coordinates, the homogeneous equation, the specific solution $[0:1:0]$, and why $\mathcal{O}$ is the group identity.</p>
+    </div>
+  </div>
+
+  <hr class="topic-divider">
+
+  <!-- EC ADDITION -->
+  <div class="topic" id="ec-addition">
+    <div class="topic-header">
+      <span class="topic-type type-alg">Algorithm</span>
+      <div class="topic-title">Addition of Points on an Elliptic Curve</div>
+    </div>
+
+    <p>$(E(K), +)$ forms an abelian group. The addition uses the <strong>chord-and-tangent method</strong>.</p>
+
+    <div class="def-box">
+      <div class="label">Group law — all cases</div>
+      <p>Let $P = (x_1, y_1)$ and $Q = (x_2, y_2)$ be points on $E: y^2 = x^3 + ax + b$.</p>
+
+      <p><strong>Case 1: $P = \mathcal{O}$.</strong> $\mathcal{O} + Q = Q$.</p>
+
+      <p><strong>Case 2: $Q = \mathcal{O}$.</strong> $P + \mathcal{O} = P$.</p>
+
+      <p><strong>Case 3: $x_1 = x_2$ and $y_1 = -y_2$ (i.e., $Q = -P$).</strong> $P + Q = \mathcal{O}$. (Vertical line.)</p>
+
+      <p><strong>Case 4: $P \neq Q$, $P \neq -Q$ (chord, generic).</strong></p>
+      $$\lambda = \frac{y_2 - y_1}{x_2 - x_1}, \quad x_3 = \lambda^2 - x_1 - x_2, \quad y_3 = \lambda(x_1 - x_3) - y_1$$
+
+      <p><strong>Case 5: $P = Q$ (tangent, doubling).</strong></p>
+      $$\lambda = \frac{3x_1^2 + a}{2y_1}, \quad x_3 = \lambda^2 - 2x_1, \quad y_3 = \lambda(x_1 - x_3) - y_1$$
+      <p>(This case requires $y_1 \neq 0$; if $y_1 = 0$ then $2P = \mathcal{O}$.)</p>
+    </div>
+
+    <div class="proof-box">
+      <div class="label">Where do these formulas come from?</div>
+      <p><strong>Chord case:</strong> The line through $P$ and $Q$ is $y = \lambda x + \mu$. Substitute into $y^2 = x^3 + ax + b$: $(\lambda x + \mu)^2 = x^3 + ax + b$. This gives a cubic $x^3 - \lambda^2 x^2 + \ldots = 0$ whose three roots are $x_1, x_2, x_3$ (by Vieta's: $x_1 + x_2 + x_3 = \lambda^2$). So $x_3 = \lambda^2 - x_1 - x_2$. Then $y_3 = -(\lambda x_3 + \mu) = \lambda(x_1 - x_3) - y_1$ (we negate because the actual sum is the reflection).</p>
+      <p><strong>Tangent case:</strong> Implicit differentiation of $y^2 = x^3 + ax + b$ gives $2y\,dy = (3x^2+a)\,dx$, so slope $\lambda = (3x_1^2+a)/(2y_1)$.</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Numerical Example in GF(7)</div>
+      <p>$E: y^2 = x^3 + 2x + 3$ over $\mathbb{F}_7$. Let $P = (3, 5)$, $Q = (3, 2)$.</p>
+      <p>Check: $y_1 + y_2 = 5 + 2 = 7 \equiv 0 \pmod 7$, so $Q = -P$. Therefore $P + Q = \mathcal{O}$.</p>
+      <p>Now double $P = (3,5)$: $\lambda = (3 \cdot 9 + 2)/(2 \cdot 5) = 29/10 \equiv 1/3 \equiv 5 \pmod 7$ (since $3 \cdot 5 = 15 \equiv 1$). $x_3 = 25 - 6 = 19 \equiv 5$. $y_3 = 5(3-5) - 5 = -15 \equiv -15+21 = 6$. So $2P = (5, 6)$.</p>
+    </div>
+  </div>
+
+  <hr class="topic-divider">
+
+  <!-- DIVISOR -->
+  <div class="topic" id="divisor">
+    <div class="topic-header">
+      <span class="topic-type type-def">Definition</span>
+      <div class="topic-title">Divisor on an Elliptic Curve</div>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Formal Definition</div>
+      <p>A <strong>divisor</strong> $D$ on an elliptic curve $E$ is a formal finite $\mathbb{Z}$-linear combination of points on $E$:</p>
+      $$D = \sum_{P \in E(\bar{K})} n_P [P], \quad n_P \in \mathbb{Z}, \text{ almost all } n_P = 0$$
+      <p>The set of all divisors forms an abelian group $\text{Div}(E)$ under addition.</p>
+
+      <p>The <strong>degree</strong> of a divisor is:</p>
+      $$\deg(D) = \sum_{P} n_P \in \mathbb{Z}$$
+
+      <p>The <strong>sum</strong> of a divisor is:</p>
+      $$\text{sum}(D) = \sum_{P} n_P \cdot P \in E(K)$$
+      <p>(where $\cdot$ and $+$ are the elliptic curve group operations)</p>
+    </div>
+
+    <h3>Principal divisors</h3>
+    <div class="def-box">
+      <div class="label">Principal divisor of a function</div>
+      <p>For a rational function $f$ on $E$ (not identically zero), its divisor is:</p>
+      $$\text{div}(f) = \sum_P \text{ord}_P(f) [P]$$
+      <p>where $\text{ord}_P(f)$ is the order of vanishing of $f$ at $P$ (positive = zero, negative = pole).</p>
+      <p>Key fact: $\deg(\text{div}(f)) = 0$ for any rational function $f$.</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example</div>
+      <p>The function $f(x,y) = x - x_0$ (a vertical line through $(x_0, y_0)$) has zeros at $(x_0, y_0)$ and $(x_0, -y_0)$ and a double pole at $\mathcal{O}$:</p>
+      $$\text{div}(x - x_0) = [(x_0, y_0)] + [(x_0, -y_0)] - 2[\mathcal{O}]$$
+      <p>Degree: $1 + 1 - 2 = 0$ ✓</p>
+    </div>
+
+    <div class="thm-box">
+      <div class="label">Key theorem (used in cryptography)</div>
+      <p>A divisor $D = \sum n_P [P]$ with $\deg(D) = 0$ is principal (i.e., $D = \text{div}(f)$ for some $f$) if and only if $\text{sum}(D) = \mathcal{O}$.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- DAY 4 -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<div class="day-section">
+  <div class="day-title">Day 4 — Lattices & Post-Quantum Cryptography</div>
+
+  <!-- LATTICE -->
+  <div class="topic" id="lattice">
+    <div class="topic-header">
+      <span class="topic-type type-def">Definition</span>
+      <div class="topic-title">Lattice (Grid)</div>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Formal Definition</div>
+      <p>A <strong>lattice</strong> $\mathcal{L}$ is a discrete additive subgroup of $\mathbb{R}^m$. Equivalently, given linearly independent vectors $\mathbf{b}_1, \ldots, \mathbf{b}_n \in \mathbb{R}^m$ (the <em>basis</em>), the lattice is:</p>
+      $$\mathcal{L}(\mathbf{b}_1, \ldots, \mathbf{b}_n) = \left\{ \sum_{i=1}^n a_i \mathbf{b}_i : a_i \in \mathbb{Z} \right\} = \{B\mathbf{a} : \mathbf{a} \in \mathbb{Z}^n\}$$
+      <p>where $B = [\mathbf{b}_1 | \cdots | \mathbf{b}_n]$ is the <strong>basis matrix</strong>.</p>
+
+      <p>The <strong>determinant</strong> (or volume) of the lattice is:</p>
+      $$\det(\mathcal{L}) = \sqrt{\det(B^T B)} = |\det(B)| \quad (\text{when } n = m)$$
+      <p>This is the volume of the fundamental parallelepiped $\mathcal{F} = \{B\mathbf{x} : \mathbf{x} \in [0,1)^n\}$.</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example</div>
+      <p>$\mathbf{b}_1 = (1, 0)$, $\mathbf{b}_2 = (0, 1)$: integer lattice $\mathbb{Z}^2$.</p>
+      <p>$\mathbf{b}_1 = (2, 0)$, $\mathbf{b}_2 = (1, 3)$: $\det = 6$, a "stretched" sublattice of $\mathbb{Z}^2$.</p>
+    </div>
+
+    <div class="thm-box">
+      <div class="label">Key Facts</div>
+      <ul>
+        <li>A lattice has infinitely many bases (related by unimodular matrices $U$ with $\det(U) = \pm 1$).</li>
+        <li>All bases of the same lattice have the same $|\det|$.</li>
+        <li>A <em>good basis</em> has short, nearly orthogonal vectors. A <em>bad basis</em> has long, nearly parallel vectors. Same lattice, very different appearances!</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="topic-divider">
+
+  <!-- SVP & CVP -->
+  <div class="topic" id="svp-cvp">
+    <div class="topic-header">
+      <span class="topic-type type-def">Definition</span>
+      <div class="topic-title">Shortest Vector Problem (SVP) & Closest Vector Problem (CVP)</div>
+    </div>
+
+    <div class="def-box">
+      <div class="label">SVP — Shortest Vector Problem</div>
+      <p>Given a basis $B$ of a lattice $\mathcal{L}$, find a <strong>shortest non-zero vector</strong> in $\mathcal{L}$:</p>
+      $$\text{SVP: find } \mathbf{v} \in \mathcal{L} \setminus \{\mathbf{0}\} \text{ minimizing } \|\mathbf{v}\|$$
+      <p>The length of the shortest vector is denoted $\lambda_1(\mathcal{L})$.</p>
+    </div>
+
+    <div class="def-box">
+      <div class="label">CVP — Closest Vector Problem</div>
+      <p>Given a basis $B$ of a lattice $\mathcal{L}$ and a target vector $\mathbf{t} \in \mathbb{R}^m$ (not necessarily in $\mathcal{L}$), find the <strong>closest lattice vector</strong> to $\mathbf{t}$:</p>
+      $$\text{CVP: find } \mathbf{v} \in \mathcal{L} \text{ minimizing } \|\mathbf{t} - \mathbf{v}\|$$
+    </div>
+
+    <div class="thm-box">
+      <div class="label">Hardness</div>
+      <ul>
+        <li><strong>SVP</strong> is NP-hard (under randomized reductions) in the exact case.</li>
+        <li><strong>CVP</strong> is NP-hard even to approximate within constant factors.</li>
+        <li>Even approximate versions (SVP$_\gamma$, CVP$_\gamma$) for polynomial $\gamma$ are believed hard — this is the foundation of lattice-based cryptography (NTRU, Kyber, Dilithium).</li>
+      </ul>
+    </div>
+
+    <div class="exam-box">
+      <div class="label">Exam tip</div>
+      <p>The key distinction: SVP looks for the short vector in the lattice itself; CVP looks for the lattice vector closest to an external target. Both are computationally hard with a bad (long/skewed) basis, but easy with a good (short/orthogonal) basis.</p>
+    </div>
+  </div>
+
+  <hr class="topic-divider">
+
+  <!-- GAUSSIAN -->
+  <div class="topic" id="gaussian">
+    <div class="topic-header">
+      <span class="topic-type type-def">Definition</span>
+      <div class="topic-title">Gaussian Expected Shortest Vector Length</div>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Gaussian Heuristic</div>
+      <p>For a "typical" (random) lattice $\mathcal{L}$ of dimension $n$ and determinant $\det(\mathcal{L})$, the expected length of the shortest non-zero vector is approximately:</p>
+      $$\lambda_1(\mathcal{L}) \approx \sqrt{\frac{n}{2\pi e}} \cdot \det(\mathcal{L})^{1/n}$$
+      <p>or equivalently (using the volume of the unit ball $V_n = \pi^{n/2}/\Gamma(n/2+1)$):</p>
+      $$\lambda_1(\mathcal{L}) \approx \left(\frac{\Gamma(n/2+1)}{V_n}\right)^{1/n} \cdot \det(\mathcal{L})^{1/n} = \sqrt{\frac{n}{2\pi e}} \cdot \det(\mathcal{L})^{1/n}$$
+    </div>
+
+    <h3>Intuition</h3>
+    <p>Think of it probabilistically: the number of lattice points in a ball of radius $r$ is approximately $\text{Vol}(B_r^n) / \det(\mathcal{L})$. The shortest vector is roughly where this count first reaches 1:</p>
+    $$V_n r^n / \det(\mathcal{L}) \approx 1 \implies r \approx (V_n^{-1} \det(\mathcal{L}))^{1/n}$$
+
+    <div class="example-box">
+      <div class="label">Example for n = 100</div>
+      <p>For the standard lattice $\mathbb{Z}^{100}$ ($\det = 1$): $\lambda_1 \approx \sqrt{100/(2\pi e)} \approx \sqrt{5.85} \approx 2.4$. But $\mathbb{Z}^{100}$ has shortest vector of length 1 — the heuristic is only valid for "random" lattices, not structured ones.</p>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">Warning</div>
+      <p>This is a heuristic, not a theorem. For specific lattices (like $\mathbb{Z}^n$), the actual shortest vector can be much shorter. In cryptographic applications, security is based on hard instances where the Gaussian heuristic approximately holds.</p>
+    </div>
+  </div>
+
+  <hr class="topic-divider">
+
+  <!-- NTRU -->
+  <div class="topic" id="ntru">
+    <div class="topic-header">
+      <span class="topic-type type-alg">Algorithm</span>
+      <div class="topic-title">NTRU Encryption System</div>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Parameters</div>
+      <p>NTRU works in the polynomial ring $R = \mathbb{Z}[x]/(x^N - 1)$, where arithmetic is mod $(x^N - 1)$ (convolution product). Elements are polynomials of degree $< N$.</p>
+      <ul>
+        <li>$N$ — prime (degree of ring)</li>
+        <li>$p$ — small prime (e.g., 3) — for inner reduction</li>
+        <li>$q$ — large integer (e.g., 2048) — for outer reduction. Must have $\gcd(p, q) = 1$ and $q \gg p$</li>
+        <li>$d_f, d_g, d_r$ — parameters controlling the "smallness" of key polynomials</li>
+      </ul>
+    </div>
+
+    <h3>Key Generation</h3>
+    <div class="def-box">
+      <div class="label">Step-by-step key generation</div>
+      <ol class="steps">
+        <li>Choose a <em>small</em> polynomial $f \in R$ with $d_f$ coefficients equal to $+1$, $d_f - 1$ equal to $-1$, rest $0$.</li>
+        <li>Ensure $f$ is invertible mod $p$: compute $f_p = f^{-1} \pmod{p}$ in $R$.</li>
+        <li>Ensure $f$ is invertible mod $q$: compute $f_q = f^{-1} \pmod{q}$ in $R$.</li>
+        <li>Choose a <em>small</em> polynomial $g \in R$ similarly.</li>
+        <li>Compute the public key: $h = p \cdot f_q \cdot g \pmod{q}$.</li>
+        <li><strong>Private key:</strong> $(f, f_p)$. <strong>Public key:</strong> $h$.</li>
+      </ol>
+    </div>
+
+    <h3>Encryption</h3>
+    <div class="def-box">
+      <div class="label">Encrypt message m ∈ R (coefficients in {0,…,p-1})</div>
+      <ol class="steps">
+        <li>Choose a random <em>small</em> "blinding" polynomial $r$ (ephemeral).</li>
+        <li>Compute ciphertext: $e = r \cdot h + m \pmod{q}$.</li>
+      </ol>
+    </div>
+
+    <h3>Decryption</h3>
+    <div class="def-box">
+      <div class="label">Decrypt e using private key f</div>
+      <ol class="steps">
+        <li>Compute $a = f \cdot e \pmod{q}$, centering coefficients in $(-q/2, q/2]$.</li>
+        <li>Reduce mod $p$: $b = a \pmod{p}$.</li>
+        <li>Recover message: $m = f_p \cdot b \pmod{p}$.</li>
+      </ol>
+    </div>
+  </div>
+
+  <hr class="topic-divider">
+
+  <!-- NTRU PROOF -->
+  <div class="topic" id="ntru-proof">
+    <div class="topic-header">
+      <span class="topic-type type-thm">Theorem + Proof</span>
+      <div class="topic-title">NTRU Correctness Proof</div>
+    </div>
+
+    <div class="thm-box">
+      <div class="label">Theorem</div>
+      <p>Under the smallness assumption, the NTRU decryption of $e = r \cdot h + m \pmod{q}$ returns the original message $m$.</p>
+    </div>
+
+    <div class="proof-box">
+      <div class="label">Proof — Step by Step</div>
+
+      <p><strong>Step 1: Expand $a = f \cdot e \pmod{q}$.</strong></p>
+      <p>Substitute $e = r \cdot h + m$ and $h = p \cdot f_q \cdot g$:</p>
+      $$a = f \cdot e = f \cdot (r \cdot h + m) = f \cdot r \cdot h + f \cdot m \pmod{q}$$
+      $$= f \cdot r \cdot (p \cdot f_q \cdot g) + f \cdot m \pmod{q}$$
+      $$= p \cdot r \cdot (f \cdot f_q) \cdot g + f \cdot m \pmod{q}$$
+
+      <p><strong>Step 2: Use $f \cdot f_q \equiv 1 \pmod{q}$.</strong></p>
+      $$a \equiv p \cdot r \cdot g + f \cdot m \pmod{q}$$
+
+      <p><strong>Step 3: Smallness assumption (key step).</strong></p>
+      <p>The coefficients of $p \cdot r \cdot g + f \cdot m$ are small (bounded by some value $< q/2$) because $r$, $g$, $f$, $m$ all have small coefficients. Therefore, when we center the coefficients mod $q$ into $(-q/2, q/2]$, we get:</p>
+      $$a = p \cdot r \cdot g + f \cdot m \quad \text{(as honest integer polynomial, no mod)}$$
+
+      <p><strong>Step 4: Reduce $a$ mod $p$.</strong></p>
+      $$a \equiv p \cdot r \cdot g + f \cdot m \equiv f \cdot m \pmod{p}$$
+      <p>(since $p \cdot r \cdot g \equiv 0 \pmod{p}$)</p>
+
+      <p><strong>Step 5: Apply $f_p = f^{-1} \pmod p$.</strong></p>
+      $$f_p \cdot a \equiv f_p \cdot f \cdot m \equiv m \pmod{p} \quad \square$$
+    </div>
+
+    <div class="warning-box">
+      <div class="label">When does decryption fail?</div>
+      <p>If the smallness assumption is violated (coefficients of $p \cdot r \cdot g + f \cdot m$ exceed $q/2$ in absolute value), then the reduction mod $q$ wraps around and the equality in Step 3 fails. This is called a <em>decryption failure</em>. Parameters must be chosen to make this probability negligible.</p>
+    </div>
+
+    <div class="exam-box">
+      <div class="label">Exam tip — the proof hinges on these two equalities</div>
+      <ol>
+        <li>$f \cdot f_q \equiv 1 \pmod{q}$ (by definition of $f_q$)</li>
+        <li>$f \cdot f_p \equiv 1 \pmod{p}$ (by definition of $f_p$)</li>
+      </ol>
+      <p>And one crucial assumption: coefficients stay small enough to pass through mod $q$ without wraparound.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- DAY 5 -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<div class="day-section">
+  <div class="day-title">Day 5 — Gröbner Bases & MQ Problem</div>
+
+  <!-- GROEBNER -->
+  <div class="topic" id="groebner">
+    <div class="topic-header">
+      <span class="topic-type type-def">Definition</span>
+      <div class="topic-title">Gröbner Basis</div>
+    </div>
+
+    <h3>Prerequisites</h3>
+    <div class="def-box">
+      <div class="label">Monomial order</div>
+      <p>A <strong>monomial order</strong> $\prec$ on $K[x_1,\ldots,x_n]$ is a total order on monomials such that: (1) $1 \prec m$ for all non-trivial monomials, (2) if $m_1 \prec m_2$ then $m \cdot m_1 \prec m \cdot m_2$. Common orders: <em>lexicographic (lex)</em>, <em>graded lex (glex)</em>, <em>graded reverse lex (grevlex)</em>.</p>
+    </div>
+    <div class="def-box">
+      <div class="label">Leading term</div>
+      <p>For $f \in K[x_1,\ldots,x_n]$ with monomial order $\prec$: $\text{LT}(f)$ is the leading (largest) term, $\text{LM}(f)$ is the leading monomial, $\text{LC}(f)$ is the leading coefficient.</p>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Formal Definition of Gröbner Basis</div>
+      <p>Let $I \subseteq K[x_1, \ldots, x_n]$ be a polynomial ideal. A finite set $G = \{g_1, \ldots, g_t\} \subset I$ is a <strong>Gröbner basis</strong> of $I$ (with respect to monomial order $\prec$) if:</p>
+      $$\langle \text{LT}(g_1), \ldots, \text{LT}(g_t) \rangle = \langle \text{LT}(f) : f \in I \setminus \{0\} \rangle$$
+      <p>In words: the ideal of leading terms of $G$ equals the ideal of leading terms of all of $I$.</p>
+    </div>
+
+    <h3>Equivalent characterizations</h3>
+    <div class="thm-box">
+      <div class="label">Equivalent conditions</div>
+      <p>$G$ is a Gröbner basis of $I$ iff any of these hold:</p>
+      <ul>
+        <li>Every $f \in I$ has its leading term divisible by some $\text{LT}(g_i)$.</li>
+        <li>Every $f \in I$ reduces to $0$ modulo $G$ (i.e., the remainder on division by $G$ is $0$).</li>
+        <li>Every $S$-polynomial $S(g_i, g_j)$ reduces to $0$ modulo $G$ (Buchberger's criterion — see Day 5).</li>
+      </ul>
+    </div>
+
+    <h3>Why does this matter?</h3>
+    <p>A Gröbner basis is the polynomial ideal analogue of a row-echelon basis for a linear system. It allows: solving polynomial systems, deciding ideal membership, eliminating variables.</p>
+
+    <div class="example-box">
+      <div class="label">Example</div>
+      <p>$I = \langle x^2 - 1, xy - 1 \rangle \subset \mathbb{Q}[x,y]$ with lex order $x \succ y$.</p>
+      <p>Compute $S(x^2-1, xy-1) = y(x^2-1) - x(xy-1) = -y + x = x - y$. Add $x - y$ to basis. Now $G = \{x^2-1, xy-1, x-y\}$. Reduce: $x-y$ reduces $xy-1$ to $y^2-1$. Final Gröbner basis: $\{x-y, y^2-1\}$. Solution: $y^2=1$ so $y=\pm 1$, $x=y$.</p>
+    </div>
+  </div>
+
+  <hr class="topic-divider">
+
+  <!-- MQ PROBLEM -->
+  <div class="topic" id="mq">
+    <div class="topic-header">
+      <span class="topic-type type-def">Definition</span>
+      <div class="topic-title">MQ Problem (Multivariate Quadratic Problem)</div>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Formal Definition</div>
+      <p>The <strong>MQ problem</strong> is: given $m$ quadratic polynomials $f_1, \ldots, f_m \in \mathbb{F}_q[x_1, \ldots, x_n]$ (each of degree $\leq 2$), find a common solution $(a_1, \ldots, a_n) \in \mathbb{F}_q^n$ such that:</p>
+      $$f_1(a_1, \ldots, a_n) = f_2(a_1, \ldots, a_n) = \cdots = f_m(a_1, \ldots, a_n) = 0$$
+      <p>The general form of each polynomial is:</p>
+      $$f_i(x_1,\ldots,x_n) = \sum_{1 \leq j \leq k \leq n} \alpha_{ijk} x_j x_k + \sum_{j=1}^n \beta_{ij} x_j + \gamma_i$$
+    </div>
+
+    <div class="thm-box">
+      <div class="label">Hardness</div>
+      <p>The MQ problem is <strong>NP-complete</strong> over any finite field, and is believed to be hard even for quantum computers. It is the basis for multivariate public-key cryptography (e.g., Rainbow, HFEv-, GeMSS schemes).</p>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Connection to Gröbner bases</div>
+      <p>Solving the MQ problem is equivalent to computing the Gröbner basis of the ideal $I = \langle f_1, \ldots, f_m \rangle + \langle x_1^q - x_1, \ldots, x_n^q - x_n \rangle$ (field equations ensure solutions lie in $\mathbb{F}_q$). The Buchberger algorithm (or faster F4/F5) computes this basis, but worst-case complexity is doubly exponential in $n$.</p>
+    </div>
+  </div>
+
+  <hr class="topic-divider">
+
+  <!-- BUCHBERGER CRITERION -->
+  <div class="topic" id="buchberger-crit">
+    <div class="topic-header">
+      <span class="topic-type type-thm">Theorem</span>
+      <div class="topic-title">Buchberger's Criterion</div>
+    </div>
+
+    <div class="def-box">
+      <div class="label">S-polynomial definition (prerequisite)</div>
+      <p>For $f, g \in K[x_1,\ldots,x_n]$ with $\text{lcm}(\text{LM}(f), \text{LM}(g)) = L$:</p>
+      $$S(f, g) = \frac{L}{\text{LT}(f)} \cdot f - \frac{L}{\text{LT}(g)} \cdot g$$
+      <p>The S-polynomial cancels the leading terms of $f$ and $g$. It's designed so that $S(f,g)$ has lower leading term than both $f$ and $g$.</p>
+    </div>
+
+    <div class="thm-box">
+      <div class="label">Buchberger's Criterion (Theorem)</div>
+      <p>A finite set $G = \{g_1, \ldots, g_t\} \subset K[x_1,\ldots,x_n]$ is a Gröbner basis for the ideal $I = \langle G \rangle$ if and only if:</p>
+      $$\text{for all } i \neq j: \quad \overline{S(g_i, g_j)}^G = 0$$
+      <p>i.e., every S-polynomial $S(g_i, g_j)$ reduces to zero on division by $G$.</p>
+    </div>
+
+    <div class="proof-box">
+      <div class="label">Proof sketch</div>
+      <p><strong>($\Rightarrow$):</strong> If $G$ is a Gröbner basis then every polynomial in $\langle G \rangle$ has remainder $0$ modulo $G$. Since $S(g_i, g_j) \in \langle G \rangle = I$, it reduces to $0$.</p>
+      <p><strong>($\Leftarrow$):</strong> Suppose all S-polynomials reduce to $0$. We must show every $f \in I$ reduces to $0$ modulo $G$. Write $f = \sum h_i g_i$ and argue (by a leading term argument with the "representation theorem") that any cancellation of leading terms can be re-expressed using S-polynomial reductions, all of which are $0$ by assumption. $\square$ (Full proof via Buchberger's syzygy lemma.)</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Example</div>
+      <p>$G = \{f_1 = x^2 - 1, f_2 = xy - 1\}$ in $\mathbb{Q}[x,y]$, lex $x \succ y$.</p>
+      <p>$\text{LM}(f_1) = x^2$, $\text{LM}(f_2) = xy$, $\text{lcm} = x^2 y$.</p>
+      <p>$S(f_1, f_2) = \frac{x^2 y}{x^2} f_1 - \frac{x^2 y}{xy} f_2 = y(x^2-1) - x(xy-1) = x^2 y - y - x^2 y + x = x - y$.</p>
+      <p>Remainder of $x-y$ on division by $\{x^2-1, xy-1\}$: leading term $x$, not divisible by $x^2$ or $xy$. So remainder $= x - y \neq 0$. → $G$ is NOT a Gröbner basis. We must add $x-y$ to $G$.</p>
+    </div>
+  </div>
+
+  <hr class="topic-divider">
+
+  <!-- BUCHBERGER ALGORITHM -->
+  <div class="topic" id="buchberger-alg">
+    <div class="topic-header">
+      <span class="topic-type type-alg">Algorithm</span>
+      <div class="topic-title">Buchberger's Algorithm (Pseudocode)</div>
+    </div>
+
+    <p>The algorithm incrementally builds a Gröbner basis by adding non-zero S-polynomial remainders until all S-polynomials reduce to zero.</p>
+
+<pre>
+<span class="kw">Input:</span>  $F = \{f_1, \ldots, f_s\}$ — generators of ideal $I$, monomial order $\prec$
+<span class="kw">Output:</span> $G$ — a Gröbner basis of $I$
+
+<span class="fn">BUCHBERGER</span>($F$):
+  $G \leftarrow F$
+  $B \leftarrow \{(g_i, g_j) : g_i, g_j \in G,\ i < j\}$  <span class="cm">// all pairs to process</span>
+
+  <span class="kw">while</span> $B \neq \emptyset$ <span class="kw">do</span>
+    pick any $(g_i, g_j) \in B$
+    $B \leftarrow B \setminus \{(g_i, g_j)\}$
+
+    $S \leftarrow S(g_i, g_j)$           <span class="cm">// compute S-polynomial</span>
+    $r \leftarrow$ <span class="fn">REDUCE</span>$(S, G)$         <span class="cm">// remainder on division by G</span>
+
+    <span class="kw">if</span> $r \neq 0$ <span class="kw">then</span>
+      $B \leftarrow B \cup \{(r, g) : g \in G\}$  <span class="cm">// pair r with all current basis elements</span>
+      $G \leftarrow G \cup \{r\}$                 <span class="cm">// add r to basis</span>
+    <span class="kw">end if</span>
+  <span class="kw">end while</span>
+
+  <span class="kw">return</span> $G$
+
+<span class="cm">// Note: G is a Gröbner basis but may not be minimal or reduced.</span>
+<span class="cm">// Optional: apply interreduction to get the unique reduced Gröbner basis.</span>
+</pre>
+
+    <h3>REDUCE subroutine</h3>
+<pre>
+<span class="fn">REDUCE</span>$(f, G = \{g_1, \ldots, g_t\})$:
+  $r \leftarrow 0$
+  $p \leftarrow f$
+  <span class="kw">while</span> $p \neq 0$ <span class="kw">do</span>
+    <span class="kw">if</span> $\exists\, g_i \in G$ such that $\text{LM}(g_i) \mid \text{LM}(p)$ <span class="kw">then</span>
+      $p \leftarrow p - \frac{\text{LT}(p)}{\text{LT}(g_i)} \cdot g_i$   <span class="cm">// reduce leading term</span>
+    <span class="kw">else</span>
+      $r \leftarrow r + \text{LT}(p)$   <span class="cm">// LT cannot be reduced, save it</span>
+      $p \leftarrow p - \text{LT}(p)$
+    <span class="kw">end if</span>
+  <span class="kw">end while</span>
+  <span class="kw">return</span> $r$
+</pre>
+
+    <div class="thm-box">
+      <div class="label">Termination & Correctness</div>
+      <ul>
+        <li><strong>Termination:</strong> Every iteration either pops from $B$ without growing $G$, or adds an element whose leading monomial is strictly greater (in the ideal of leading monomials). By the ascending chain condition (Dickson's lemma), this must terminate.</li>
+        <li><strong>Correctness:</strong> By Buchberger's criterion: the algorithm terminates exactly when all S-polynomials reduce to $0$, which is the criterion for $G$ being a Gröbner basis.</li>
+      </ul>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Trace through example</div>
+      <p>$F = \{f_1 = x^2 - 1, f_2 = xy - 1\}$, lex with $x \succ y$.</p>
+      <p>$B = \{(f_1, f_2)\}$. Pick $(f_1, f_2)$: $S = x - y$. $\text{REDUCE}(x-y, \{f_1,f_2\})$: LM$(x-y) = x$; $x$ not divisible by $x^2$ or $xy$. Remainder $= x - y \neq 0$. Add $g_3 = x-y$. $G = \{f_1, f_2, g_3\}$, $B = \{(f_1, g_3), (f_2, g_3)\}$.</p>
+      <p>Process $(f_1, g_3)$: $S(x^2-1, x-y) = (x^2-1) - x(x-y) = xy - 1 = f_2$. REDUCE$(f_2, G)$: $xy - 1$ divided by $xy-1 = f_2$ reduces to $0$. No new element.</p>
+      <p>Process $(f_2, g_3)$: $S(xy-1, x-y) = y(x-y) - x(xy-1)/(y)$... LCM$(xy, x) = xy$. $S = (xy/xy)(xy-1) - (xy/x)(x-y) = xy-1 - y(x-y) = xy-1-xy+y^2 = y^2-1$. REDUCE$(y^2-1, G)$: LM $= y^2$, not divisible by $x^2, xy, x$. So $r = y^2-1$. Add $g_4 = y^2-1$.</p>
+      <p>Continue… eventually terminates with Gröbner basis $G = \{x-y, y^2-1\}$ (after reduction).</p>
+    </div>
+
+    <div class="exam-box">
+      <div class="label">Exam tip — pseudocode must contain</div>
+      <ol>
+        <li>Initialize $G \leftarrow F$, $B \leftarrow$ all pairs</li>
+        <li>While loop: pick pair, compute S-polynomial, reduce modulo $G$</li>
+        <li>If remainder $\neq 0$: add to $G$, add new pairs to $B$</li>
+        <li>Return $G$</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- DAY 6 -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<div class="day-section">
+  <div class="day-title">Day 6 — Discrete Logarithm Algorithms</div>
+
+  <!-- INDEX CALCULUS -->
+  <div class="topic" id="index-calculus">
+    <div class="topic-header">
+      <span class="topic-type type-alg">Algorithm</span>
+      <div class="topic-title">Index Calculus</div>
+      <div class="topic-subtitle">Solves the discrete logarithm problem in Z_p*</div>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Problem Statement</div>
+      <p>Given a prime $p$, a generator $g$ of $\mathbb{Z}_p^*$, and an element $h \in \mathbb{Z}_p^*$, find $x$ such that $g^x \equiv h \pmod{p}$.</p>
+    </div>
+
+    <h3>Core Idea: Factor Base</h3>
+    <p>The algorithm exploits the fact that many random powers of $g$ factor into small primes. A number is <strong>$B$-smooth</strong> if all its prime factors are $\leq B$.</p>
+
+<pre>
+<span class="kw">Input:</span>  prime $p$, generator $g$, target $h$, smoothness bound $B$
+<span class="kw">Output:</span> $x = \log_g h \pmod{p-1}$
+
+<span class="cm">═══ PHASE 1: Precomputation of discrete logs of primes ═══</span>
+
+$\mathcal{B} = \{p_1, p_2, \ldots, p_t\}$  <span class="cm">// factor base: all primes ≤ B</span>
+
+<span class="fn">COLLECT_RELATIONS</span>():
+  $\text{relations} \leftarrow []$
+  <span class="kw">while</span> $|\text{relations}| < t + 1$ <span class="kw">do</span>
+    choose random $k \in \{1, \ldots, p-2\}$
+    compute $v \leftarrow g^k \bmod p$
+    <span class="kw">if</span> $v$ is $\mathcal{B}$-smooth, say $v = p_1^{e_1} \cdots p_t^{e_t}$  <span class="kw">then</span>
+      record: $k \equiv e_1 L_1 + e_2 L_2 + \cdots + e_t L_t \pmod{p-1}$
+      <span class="cm">// where L_i = log_g(p_i) are unknowns</span>
+      append to relations
+    <span class="kw">end if</span>
+  <span class="kw">end while</span>
+
+<span class="fn">SOLVE_LINEAR_SYSTEM</span>():
+  solve the system of $\geq t$ equations for $L_1, \ldots, L_t \pmod{p-1}$
+  <span class="cm">// using linear algebra over Z/(p-1)Z</span>
+  <span class="kw">return</span> $\{L_1, \ldots, L_t\}$   <span class="cm">// logs of all factor base primes</span>
+
+<span class="cm">═══ PHASE 2: Individual logarithm for h ═══</span>
+
+<span class="fn">FIND_LOG</span>($h$):
+  <span class="kw">loop</span>
+    choose random $s \in \{0, \ldots, p-2\}$
+    compute $w \leftarrow h \cdot g^s \bmod p$
+    <span class="kw">if</span> $w$ is $\mathcal{B}$-smooth, say $w = p_1^{f_1} \cdots p_t^{f_t}$  <span class="kw">then</span>
+      <span class="cm">// log_g(w) = log_g(h) + s (mod p-1)</span>
+      <span class="cm">// log_g(w) = f_1*L_1 + ... + f_t*L_t (mod p-1)</span>
+      $x \leftarrow f_1 L_1 + \cdots + f_t L_t - s \pmod{p-1}$
+      <span class="kw">return</span> $x$
+    <span class="kw">end if</span>
+  <span class="kw">end loop</span>
+</pre>
+
+    <h3>Why this works</h3>
+    <div class="proof-box">
+      <div class="label">Correctness argument</div>
+      <p><strong>Phase 1:</strong> When $g^k \equiv p_1^{e_1} \cdots p_t^{e_t} \pmod{p}$, taking $\log_g$ of both sides gives: $k \equiv e_1 \log_g p_1 + \cdots + e_t \log_g p_t \pmod{p-1}$. This is a linear equation in the unknowns $L_i = \log_g p_i$. With $t+1$ independent equations, we can solve for all $L_i$.</p>
+
+      <p><strong>Phase 2:</strong> When $h \cdot g^s \equiv p_1^{f_1} \cdots p_t^{f_t} \pmod{p}$, taking $\log_g$: $\log_g h + s \equiv f_1 L_1 + \cdots + f_t L_t \pmod{p-1}$. So $\log_g h \equiv \sum f_i L_i - s \pmod{p-1}$.</p>
+    </div>
+
+    <div class="thm-box">
+      <div class="label">Complexity</div>
+      <p>With optimal $B = L_p[1/2, 1/\sqrt{2}]$ (where $L_p[\alpha, c] = e^{c (\log p)^\alpha (\log\log p)^{1-\alpha}}$), the running time is subexponential:</p>
+      $$\text{Time} = L_p\left[\frac{1}{2}, \sqrt{2}\right] = e^{\sqrt{2} \cdot \sqrt{\log p \log\log p}}$$
+      <p>This is why DLP in $\mathbb{Z}_p^*$ requires $p$ of at least 2048 bits for security.</p>
+    </div>
+
+    <div class="exam-box">
+      <div class="label">Exam tip — pseudocode must include</div>
+      <ol>
+        <li>Factor base $\mathcal{B}$</li>
+        <li>Phase 1: random $k$, compute $g^k \bmod p$, check smoothness, build linear system, solve for $L_i$</li>
+        <li>Phase 2: random $s$, compute $h \cdot g^s \bmod p$, check smoothness, compute $x = \sum f_i L_i - s$</li>
+      </ol>
+    </div>
+  </div>
+
+  <hr class="topic-divider">
+
+  <!-- POHLIG-HELLMAN -->
+  <div class="topic" id="pohlig-hellman">
+    <div class="topic-header">
+      <span class="topic-type type-thm">Theorem + Proof</span>
+      <div class="topic-title">Pohlig-Hellman Algorithm</div>
+      <div class="topic-subtitle">Prove that it solves g^x = h</div>
+    </div>
+
+    <div class="thm-box">
+      <div class="label">Statement</div>
+      <p>Let $G$ be a cyclic group of order $n = p_1^{e_1} p_2^{e_2} \cdots p_r^{e_r}$, with generator $g$ and target $h = g^x$. The Pohlig-Hellman algorithm finds $x \pmod{n}$ by reducing to smaller discrete logarithm problems in subgroups of prime power order, then combining via the Chinese Remainder Theorem.</p>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Main idea</div>
+      <p>Instead of solving $g^x = h$ in the full group of order $n$, solve for $x \bmod p_i^{e_i}$ separately for each prime power factor, then use CRT to recover $x \bmod n$.</p>
+    </div>
+
+<pre>
+<span class="kw">Input:</span>  Group $G$ of order $n = \prod p_i^{e_i}$, generator $g$, $h = g^x$
+<span class="kw">Output:</span> $x \bmod n$
+
+<span class="fn">POHLIG_HELLMAN</span>($g, h, n$):
+  factor $n = p_1^{e_1} \cdots p_r^{e_r}$
+  
+  <span class="kw">for each</span> prime power $q = p_i^{e_i}$:
+    <span class="cm">// Step 1: project to subgroup of order q</span>
+    $g_q \leftarrow g^{n/q}$         <span class="cm">// has order exactly q = p^e</span>
+    $h_q \leftarrow h^{n/q}$         <span class="cm">// = g^(x · n/q) = g_q^x</span>
+    
+    <span class="cm">// Step 2: solve g_q^{x_i} = h_q using baby-step-giant-step</span>
+    <span class="cm">// or by building x mod p^e digit by digit:</span>
+    
+    $x_i \leftarrow$ <span class="fn">DLP_PRIME_POWER</span>($g_q, h_q, p, e$)
+    <span class="cm">// x_i is x mod p^e</span>
+  
+  <span class="cm">// Step 3: CRT to combine all x mod p_i^{e_i}</span>
+  $x \leftarrow$ <span class="fn">CRT</span>($[x_1, \ldots, x_r], [p_1^{e_1}, \ldots, p_r^{e_r}]$)
+  <span class="kw">return</span> $x \bmod n$
+
+
+<span class="fn">DLP_PRIME_POWER</span>($g_q, h_q, p, e$):
+  <span class="cm">// Solve g_q^x = h_q where ord(g_q) = p^e</span>
+  <span class="cm">// Write x = a_0 + a_1*p + a_2*p^2 + ... + a_{e-1}*p^{e-1} (base p)</span>
+  $\gamma \leftarrow g_q^{p^{e-1}}$    <span class="cm">// has order p (a primitive p-th root)</span>
+  $x \leftarrow 0$
+  $\tilde{h} \leftarrow h_q$
+  
+  <span class="kw">for</span> $k = 0$ <span class="kw">to</span> $e - 1$:
+    $\delta \leftarrow \tilde{h}^{p^{e-1-k}}$   <span class="cm">// = gamma^{a_k}, extract next digit</span>
+    $a_k \leftarrow$ <span class="fn">DLOG</span>$(\gamma, \delta, p)$ <span class="cm">// DLP of order p (BSGS, O(sqrt(p)))</span>
+    $x \leftarrow x + a_k \cdot p^k$
+    $\tilde{h} \leftarrow \tilde{h} \cdot g_q^{-a_k \cdot p^k}$  <span class="cm">// peel off digit a_k</span>
+  
+  <span class="kw">return</span> $x$
+</pre>
+
+    <div class="proof-box">
+      <div class="label">Correctness Proof — prove that it solves g^x = h</div>
+
+      <p><strong>Claim:</strong> $g_q = g^{n/q}$ has order exactly $q = p^e$.</p>
+      <p>$(g_q)^q = g^{n/q \cdot q} = g^n = e_G$ (identity). And for any proper divisor $d \mid q$ with $d < q$: $(g_q)^d = g^{n/q \cdot d}$. Since $g$ has order $n$ and $n/q \cdot d < n$ (because $d < q$), and $n \nmid n/q \cdot d$ (since $q \nmid q/d$ when $p \mid q/d$), this is not the identity. So $\text{ord}(g_q) = q$. ✓</p>
+
+      <p><strong>Claim:</strong> $h_q = g_q^x \pmod{n}$, so $x$ modulo $q$ is the DLP of $h_q$ to base $g_q$.</p>
+      <p>$h_q = h^{n/q} = (g^x)^{n/q} = (g^{n/q})^x = g_q^x$. ✓</p>
+      <p>Therefore $x_i = x \bmod p_i^{e_i}$ (since $g_q$ has order $p_i^{e_i}$).</p>
+
+      <p><strong>CRT step:</strong> We have $x \equiv x_i \pmod{p_i^{e_i}}$ for each $i$. Since the $p_i^{e_i}$ are pairwise coprime and their product is $n$, by the Chinese Remainder Theorem there is a unique $x \in \{0, \ldots, n-1\}$ satisfying all these congruences simultaneously. That unique solution is the $x$ we seek. $\square$</p>
+
+      <p><strong>Digit extraction in DLP_PRIME_POWER:</strong> Write $x \bmod p^e = a_0 + a_1 p + \cdots + a_{e-1} p^{e-1}$. Then $\tilde{h}^{p^{e-1}} = g_q^{x \cdot p^{e-1}} = g_q^{(a_0 + a_1 p + \cdots) p^{e-1}} = g_q^{a_0 p^{e-1}} = \gamma^{a_0}$ (higher terms become $g_q^{p^e} = e$). So $a_0 = \log_\gamma \tilde{h}^{p^{e-1}}$ in a group of order $p$. Inductively recover all digits. $\square$</p>
+    </div>
+
+    <div class="thm-box">
+      <div class="label">Complexity</div>
+      <p>Total time: $O\left(\sum_{i=1}^r e_i \left(\log n + \sqrt{p_i}\right)\right)$. Pohlig-Hellman is efficient when all prime factors $p_i$ of $n$ are small. This is why cryptographic groups must have order with a large prime factor — e.g., use a prime-order subgroup.</p>
+    </div>
+  </div>
+
+  <hr class="topic-divider">
+
+  <!-- IOC -->
+  <div class="topic" id="ioc">
+    <div class="topic-header">
+      <span class="topic-type type-thm">Theorem + Proof</span>
+      <div class="topic-title">Index of Coincidence (IOC)</div>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Formal Definition</div>
+      <p>Let $T = t_1 t_2 \cdots t_n$ be a text of length $n$ over a $c$-letter alphabet. Let $f_i$ be the frequency of the $i$-th letter. The <strong>Index of Coincidence</strong> is:</p>
+      $$\text{IC}(T) = \frac{\sum_{i=0}^{c-1} f_i(f_i - 1)}{n(n-1)}$$
+      <p>Equivalently, IC is the probability that two randomly chosen letters from $T$ are the same:</p>
+      $$\text{IC}(T) = \Pr[\text{two random letters from } T \text{ are equal}]$$
+    </div>
+
+    <h3>Key Values for English (c = 26)</h3>
+    <table>
+      <tr><th>Text type</th><th>IC value</th><th>Explanation</th></tr>
+      <tr><td>English plaintext</td><td>$\approx 0.065$</td><td>Non-uniform letter distribution</td></tr>
+      <tr><td>Random (uniform) text</td><td>$\approx 0.0385 = 1/26$</td><td>All letters equally likely</td></tr>
+      <tr><td>Vigenère, key length $d$</td><td>$\approx \frac{1}{d} \cdot 0.065 + \frac{d-1}{d} \cdot 0.0385$</td><td>Mix of $d$ Caesar ciphers</td></tr>
+    </table>
+
+    <div class="thm-box">
+      <div class="label">Theorem: IC of English (what it proves)</div>
+      <p>For a language where letter $i$ has probability $p_i$, the expected IC of a long text is:</p>
+      $$E[\text{IC}] = \sum_{i=0}^{c-1} p_i^2$$
+      <p>For English: $\sum_{i} p_i^2 \approx 0.065$. For uniform: $\sum_i (1/c)^2 = 1/c \approx 0.038$.</p>
+    </div>
+
+    <div class="proof-box">
+      <div class="label">Proof that IC applies (derivation)</div>
+
+      <p><strong>Step 1:</strong> Count the ways to pick 2 letters of the same type $i$: $\binom{f_i}{2} = \frac{f_i(f_i-1)}{2}$.</p>
+
+      <p><strong>Step 2:</strong> Total ways to pick any 2 letters: $\binom{n}{2} = \frac{n(n-1)}{2}$.</p>
+
+      <p><strong>Step 3:</strong> Probability that two chosen letters are both type $i$:</p>
+      $$\text{IC} = \frac{\text{number of matching pairs}}{\text{total pairs}} = \frac{\sum_i \binom{f_i}{2}}{\binom{n}{2}} = \frac{\sum_i f_i(f_i-1)}{n(n-1)}$$
+
+      <p><strong>Step 4:</strong> For large $n$, $f_i \approx n p_i$, so:</p>
+      $$\text{IC} \approx \frac{\sum_i n p_i \cdot (n p_i - 1)}{n(n-1)} \approx \sum_i p_i^2$$
+
+      <p><strong>Step 5 (Vigenère):</strong> With key length $d$, the ciphertext has $d$ "streams", each encrypted with a different Caesar shift. Two random letters from the same stream agree with probability $\sum p_i^2 \approx 0.065$; two letters from different streams agree with probability $1/26 \approx 0.038$. The overall IC is a weighted mix:</p>
+      $$\text{IC}_{\text{Vig}} \approx \frac{1}{d} \cdot 0.065 + \frac{d-1}{d} \cdot 0.038$$
+      <p>Solving for $d$ given the observed IC lets us estimate the key length. $\square$</p>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Application to Kasiski / Vigenère analysis</div>
+      <p>Observe IC of ciphertext ≈ 0.052. Then:</p>
+      $$0.052 = \frac{0.065}{d} + \frac{d-1}{d} \cdot 0.038 = \frac{0.038 d + 0.027}{d} = 0.038 + \frac{0.027}{d}$$
+      $$0.014 = \frac{0.027}{d} \implies d \approx 1.9 \approx 2$$
+      <p>So the key length is likely 2.</p>
+    </div>
+
+    <div class="exam-box">
+      <div class="label">Exam tip — "prove that it applies"</div>
+      <p>The proof must show: (1) combinatorial definition of IC, (2) it equals $\sum p_i^2$ in the limit, (3) this value distinguishes natural language ($0.065$) from random text ($1/c$), and (4) for Vigenère the IC is the weighted average allowing key length estimation.</p>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// Progress bar
+const main = document.getElementById('main');
+const fill = document.getElementById('progress-fill');
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  const total = document.body.scrollHeight - window.innerHeight;
+  fill.style.width = (scrolled / total * 100) + '%';
+});
+
+// Active nav link
+const links = document.querySelectorAll('.nav-link');
+const topics = document.querySelectorAll('.topic, .day-section');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      links.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector('.nav-link[href="#' + id + '"]');
+      if (active) active.classList.add('active');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '-20% 0px -60% 0px' });
+topics.forEach(t => { if (t.id) observer.observe(t); });
+</script>
+</body>
+</html>
