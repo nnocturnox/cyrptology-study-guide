@@ -1,2 +1,2 @@
-## Math for Cyrptology  
-https://nnocturnox.github.io/cyrptology-study-guide/
+## Math for Cryptology  
+https://nnocturnox.github.io/cryptology-study-guide/
